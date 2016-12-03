@@ -36,6 +36,5 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.discard()
 	wavescope:draw(0,0)
 end

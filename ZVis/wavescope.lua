@@ -1,4 +1,4 @@
--- WaveScope implementation
+-- ZVis - WaveScope implementation
 -- zorg @ 2016 § ISC
 
 -- References used

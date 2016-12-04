@@ -25,7 +25,15 @@ local visualizer = {}
 
 -- Getters
 
+
+
 -- Setters
+
+
+
+-- Other methods
+
+
 
 -- Callbacks
 visualizer.update = function(vis)
@@ -346,9 +354,9 @@ local new = function()
 	vis.waveform = nil
 
 	-- Data windowing related
-	vis.blockRate  = 1000 --1024*10 -- unit/sec
-	vis.blockSize  = 1--64      -- smp/unit
-	vis.blockCount = 1000--1024    -- smp
+	vis.blockRate  = 1024 --1024*10 -- unit/sec
+	vis.blockSize  = 128--64      -- smp/unit
+	vis.blockCount = 1024--1024    -- smp
 
 	-- Initialize buffers
 	for i=0, vis.blockCount-1 do

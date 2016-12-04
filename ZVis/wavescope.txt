@@ -1,0 +1,62 @@
+-- Input
+	-- SoundData[]           -- List of SoundData object references that we visualize. (order is important)
+	-- PlaybackPtr[]         -- Function that points to the current samplepoint. (Object:tell('samples'), whether Source or not.)
+
+-- Logic
+	-- _LastPlaybackPtr[]    -- Where PlaybackPtr of SoundDatas were in the previous cycle.
+
+	-- BlockRate             -- How many Blocks/second to process.
+	-- BlockSize             -- How many smp-s are used to calculate the result in one Block.
+	-- BlockCount            -- How many elements are in the Buffers; recalculated when setting either Width or BlockSpacing.
+	-- BlockMode             -- Signed, Unsigned, Mirrored.
+	-- BlockFunction         -- Min, Max, Avg, Rms, Rnd.
+
+	-- _BufferElapsed[]      -- Counts DC points, resets on non-0, hides output after BufferHideTime.
+	-- BufferHideTime        -- "Collapse" tracks that are DC after this much time.
+
+	-- BufferPtr             -- Points to current element of buffers. Only one.
+	-- BufferP[]              -- List of buffers; contains non-negative smp-s.
+	-- BufferN[]             -- List of buffers; contains non-positive smp-s.
+
+-- Graphics
+	-- left                  -- Left offset of window.
+	-- Top                   -- Top offset of window.
+	-- Width                 -- Width of window.
+	-- Height                -- Height of window.
+
+	-- BackgroundColor       -- Everything not a signal.
+	-- CentroidColor         -- Middlepoint of a channel, between positive and negative phase areas. (at DC)
+	-- OutlineColor          -- Color for graph outlines.
+	-- PositiveColor         -- Color for positive phase.
+	-- NegativeColor         -- Color for negative phase.
+	-- UnsignedColor         -- Color for unsigned mode.
+	-- MirroredColor         -- Color for mirrored mode.
+	-- ColorMode             -- Simple, Frequency, Mood.
+
+	-- BlockSpacing          -- Self-Explanatory; recalculated when setting either Width or BlockCount.
+	-- RenderMode            -- Line, Bar, Point.
+	-- RenderFilled          -- Bool, Lines become Polygons, Bars gets an "outline", Points get 3 options below.
+	-- PointCircled          -- Draws filled circles on exact samplepoint locations when wf. is zoomed in above 1.0 Block/px.
+	-- PointTrail            -- Draws lines between consecutive points.
+	-- PointStar             -- Draws lines perpendicular to the time axis, from DC to points.
+
+	-- Interpolation         -- None, Nearest, Linear, Cubic, Hermite.
+
+	-- ChannelMode           -- Separated, Overlay, Additive, Difference.
+	-- RenderChannelOrder    -- Specifies the order of separate buffers that are drawn.
+
+	-- ScanMode              -- Scan, Sweep, Scroll.
+	-- RenderInvertDirection -- If true, time-axis directions are mirrored.
+	-- RenderInvertPhase     -- If true, value-axis directions are mirrored within channels.
+	-- _InverseSweepCycle    -- If true, current cycle will go in reverse.
+
+	-- PinchTreshold         -- [0.0-1.0] The distance from both ends to the centre where a pinching effect will be applied to the
+                             -- displayed waveform. 0.0 means no pinch, 1.0 means pinch from center. (Static, invariant of ScanMode)
+
+-- Extra methods
+	-- update()               -- Pull style.
+	-- draw()                 -- One frame to the screen.
+	-- render([from,to])      -- Push style, can be used to render the whole SoundData at once, though it will be slow.
+	-- export(file[,from,to]) -- Draws to canvas and saves the image, calls render().
+
+	-- setBPM(bpm,multiplier) -- Adjusts blockRate to match a tempo value.

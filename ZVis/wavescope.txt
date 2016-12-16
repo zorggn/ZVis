@@ -31,7 +31,7 @@
 	-- NegativeColor         -- Color for negative phase.
 	-- UnsignedColor         -- Color for unsigned mode.
 	-- MirroredColor         -- Color for mirrored mode.
-	-- ColorMode             -- Simple, Frequency, Mood.
+	-- ColorMode             -- Simple, Brightness, Mood. (Spectral Centroid HSL with either max lightness, or based on total power.)
 
 	-- BlockSpacing          -- Self-Explanatory; recalculated when setting either Width or BlockCount.
 	-- RenderMode            -- Line, Bar, Point.
@@ -52,6 +52,7 @@
 
 	-- PinchTreshold         -- [0.0-1.0] The distance from both ends to the centre where a pinching effect will be applied to the
                              -- displayed waveform. 0.0 means no pinch, 1.0 means pinch from center. (Static, invariant of ScanMode)
+    -- PinchFunction         -- Linear, ... basically tween-like shapes.
 
 -- Extra methods
 	-- update()               -- Pull style.

@@ -42,16 +42,16 @@ Visualizer.WaveScope  = require 'WaveScope'  -- 2.0D: φ(t)/t
 --Visualizer.Waterfall  = require 'Waterfall'  -- 3.0D: A(F(i,t))/F(i)/t
 
 Visualizer.new = function(VisualizerType, left, top, width, height, ...)
-	assert(VisualizerTypes[VisualizerType], ("Visualizer type '%s' not supported!"):format(VisualizerType))
+	assert(VisualizerTypes[VisualizerType], ("Visualizer type '%s' not supported."):format(VisualizerType))
 	-- Set dimensions and positions to cover the whole screen by default, if any related argument is missing.
 	if type(left) == 'nil' or type(top) == 'nil' or type(width) == 'nil' or type(height) == 'nil' then
 		left, top = 0, 0
 		width, height = love.graphics.getDimensions()
 	end
-	assert(type(left)      == 'number', ("Visualizer's left coordinate is not a number! (%s)"):format(type(left)))
-	assert(type(top)      == 'number', ("Visualizer's right coordinate is not a number! (%s)"):format(type(top)))
-	assert(type(width)  == 'number', ("Visualizer's width is not a number! (%s)"):format(type(width)))
-	assert(type(height) == 'number', ("Visualizer's height is not a number! (%s)"):format(type(height)))
+	assert(type(left)      == 'number', ("Visualizer's left position is not a number. (%s)"):format(type(left)))
+	assert(type(top)      == 'number', ("Visualizer's top position is not a number. (%s)"):format(type(top)))
+	assert(type(width)  == 'number', ("Visualizer's width is not a number. (%s)"):format(type(width)))
+	assert(type(height) == 'number', ("Visualizer's height is not a number. (%s)"):format(type(height)))
 	return Visualizer[VisualizerType](left, top, width, height, ...)
 end
 

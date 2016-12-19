@@ -26,14 +26,22 @@ setMode
 
 -- Graphics
 
-	-- BackgroundColor       -- Everything not a signal.
-	-- CentroidColor         -- Middlepoint of a channel, between positive and negative phase areas. (at DC)
-	-- OutlineColor          -- Color for graph outlines.
-	-- PositiveColor         -- Color for positive phase.
-	-- NegativeColor         -- Color for negative phase.
-	-- UnsignedColor         -- Color for unsigned mode.
-	-- MirroredColor         -- Color for mirrored mode.
-	-- ColorMode             -- Simple, Brightness, Mood. (Spectral Centroid HSL with either max lightness, or based on total power.)
+	-- ColorTypes
+		-- Background       -- Everything not a signal. (Transparency supported)
+		-- Baseline         -- Middlepoint of a channel (DC), between positive and negative phase areas.
+		-- Line_            -- Color for graph outlines. (Paralell / Trail)
+		-- Fill_            -- Color for fills from DC to points. (Perpendicular / Star)
+			-- Positive         -- Color for signed mode, positive phase.
+			-- Negative         -- Color for signed mode, negative phase.
+			-- Unsigned         -- Color for unsigned mode.
+			-- Mirrored         -- Color for mirrored mode.
+	-- ColorModes
+		-- Simple        -- Specific color.
+		-- Brightness    -- Spectral Centroid HSL with max lightness.
+		-- Mood          -- Spectral Centroid HSL with lightness being total power over the spectrum.
+
+
+
 
 	-- BlockSpacing          -- Self-Explanatory; recalculated when setting either Width or BlockCount.
 	-- RenderMode            -- Line, Bar, Point.

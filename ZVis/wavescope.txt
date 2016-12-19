@@ -1,3 +1,9 @@
+-- Constructor
+
+setMode
+	static - uses a sounddata to hold the complete waveform. needs an object with a :tell function for timing purposes.
+	dynamic - receives many sounddata objects that represents chunks from the waveform. - TODO
+
 -- Input
 	-- SoundData[]           -- List of SoundData object references that we visualize. (order is important)
 	-- PlaybackPtr[]         -- Function that points to the current samplepoint. (Object:tell('samples'), whether Source or not.)
@@ -19,10 +25,6 @@
 	-- BufferN[]             -- List of buffers; contains non-positive smp-s.
 
 -- Graphics
-	-- left                  -- Left offset of window.
-	-- Top                   -- Top offset of window.
-	-- Width                 -- Width of window.
-	-- Height                -- Height of window.
 
 	-- BackgroundColor       -- Everything not a signal.
 	-- CentroidColor         -- Middlepoint of a channel, between positive and negative phase areas. (at DC)

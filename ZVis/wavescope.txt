@@ -14,7 +14,7 @@ setMode
 	-- BlockRate             -- How many Blocks/second to process.
 	-- BlockSize             -- How many smp-s are used to calculate the result in one Block.
 	-- BlockCount            -- How many elements are in the Buffers; recalculated when setting either Width or BlockSpacing.
-	-- BlockMode             -- Signed, Unsigned, Mirrored.
+	-- BlockMode             -- Signed, Unsigned
 	-- BlockFunction         -- Min, Max, Avg, Rms, Rnd.
 
 	-- _BufferElapsed[]      -- Counts DC points, resets on non-0, hides output after BufferHideTime.
@@ -26,25 +26,32 @@ setMode
 
 -- Graphics
 
+	-- Window
+		-- Left
+		-- Top
+		-- Width
+		-- Height
+
 	-- ColorTypes
 		-- Background       -- Everything not a signal. (Transparency supported)
 		-- Baseline         -- Middlepoint of a channel (DC), between positive and negative phase areas.
 		-- Line_            -- Color for graph outlines. (Paralell / Trail)
 		-- Fill_            -- Color for fills from DC to points. (Perpendicular / Star)
+			-- (Unsigned)       -- Color for unsigned mode.
 			-- Positive         -- Color for signed mode, positive phase.
 			-- Negative         -- Color for signed mode, negative phase.
-			-- Unsigned         -- Color for unsigned mode.
 			-- Mirrored         -- Color for mirrored mode.
 	-- ColorModes
 		-- Simple        -- Specific color.
-		-- Brightness    -- Spectral Centroid HSL with max lightness.
-		-- Mood          -- Spectral Centroid HSL with lightness being total power over the spectrum.
-
-
+		-- Gradient      -- Specific color according to value, chosen from a range between two colors.
+		-- Spectral      -- Spectral Centroid HSL.
+		-- Weighted      -- Spectral Centroid HSL with lightness being total power over the spectrum.
+		-- Shader        -- Instead of color triplets/quadruplets, pass in shaders.
 
 
 	-- BlockSpacing          -- Self-Explanatory; recalculated when setting either Width or BlockCount.
 	-- RenderMode            -- Line, Bar, Point.
+	-- RenderMirrored        -- Bool; works together with BlockMode.
 	-- RenderFilled          -- Bool, Lines become Polygons, Bars gets an "outline", Points get 3 options below.
 	-- PointCircled          -- Draws filled circles on exact samplepoint locations when wf. is zoomed in above 1.0 Block/px.
 	-- PointTrail            -- Draws lines between consecutive points.
@@ -55,7 +62,7 @@ setMode
 	-- ChannelMode           -- Separated, Overlay, Additive, Difference.
 	-- RenderChannelOrder    -- Specifies the order of separate buffers that are drawn.
 
-	-- ScanMode              -- Scan, Sweep, Scroll.
+	-- ScanMode              -- Scan, Sweep, Scroll. (one direction, bidi, continuous offset)
 	-- RenderInvertDirection -- If true, time-axis directions are mirrored.
 	-- RenderInvertPhase     -- If true, value-axis directions are mirrored within channels.
 	-- _InverseSweepCycle    -- If true, current cycle will go in reverse.

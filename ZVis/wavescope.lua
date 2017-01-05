@@ -67,7 +67,7 @@ local new = function(left, top, width, height, properities)
 
 	-- Set colors.
 
-	return new
+	return vis
 end
 
 ----------

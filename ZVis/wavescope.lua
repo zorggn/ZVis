@@ -50,6 +50,13 @@ visualizer.getColor            = function(vis, ctype)
 visualizer.getSimpleColor   = function(vis, ctype)
 	return unpack(vis.colorSimple[ctype])
 	end
+visualizer.getGradientColor = function(vis, ctype) return end -- TODO
+visualizer.getSpectralColor = function(vis, ctype) return end -- TODO
+visualizer.getWeightedColor = function(vis, ctype) return end -- TODO
+visualizer.getShaderColor   = function(vis, ctype) return end -- TODO
+
+
+
 
 -- Setters
 visualizer.setWindowPosition   = function(vis, left, top)
@@ -79,6 +86,13 @@ visualizer.setSimpleColor   = function(vis, ctype, r, g, b, a)
 	r,g,b,a = type(r) ~= table and r,g,b,a or unpack(r)
 	vis.colorSimple[ctype] = {r,g,b,a}
 	end
+visualizer.setGradientColor = function(vis, ctype) return end -- TODO
+visualizer.setSpectralColor = function(vis, ctype) return end -- TODO
+visualizer.setWeightedColor = function(vis, ctype) return end -- TODO
+visualizer.setShaderColor   = function(vis, ctype) return end -- TODO
+
+
+
 
 -- Metatable
 local mtVisualizer = {__index = visualizer}

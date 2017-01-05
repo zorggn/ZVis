@@ -47,6 +47,9 @@ visualizer.getColor            = function(vis, ctype)
 	colorModeGetterWrapper[2] = vis.colorMode[ctype]:gsub("^%l", string.upper) -- Twice as fast.
 	visualizer[table.concat(colorModeGetterWrapper)](vis, ctype)
 	end
+visualizer.getSimpleColor   = function(vis, ctype)
+	return unpack(vis.colorSimple[ctype])
+	end
 
 -- Setters
 visualizer.setWindowPosition   = function(vis, left, top)
@@ -71,6 +74,10 @@ visualizer.setColor            = function(vis, ctype, ...)
 	--visualizer[fmtStr3x:format("set",vis.colorMode[ctype]:gsub("^%l", string.upper),"Color")](vis, ctype, ...)
 	colorModeSetterWrapper[2] = vis.colorMode[ctype]:gsub("^%l", string.upper) -- Twice as fast.
 	visualizer[table.concat(colorModeSetterWrapper)](vis, ctype, ...)
+	end
+visualizer.setSimpleColor   = function(vis, ctype, r, g, b, a)
+	r,g,b,a = type(r) ~= table and r,g,b,a or unpack(r)
+	vis.colorSimple[ctype] = {r,g,b,a}
 	end
 
 -- Metatable

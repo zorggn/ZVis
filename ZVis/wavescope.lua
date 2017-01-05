@@ -41,6 +41,12 @@ visualizer.getColorMode        = function(vis, ctype)
 	assert(colorType[ctype], "Color type '" .. ctype .. "' not supported.")
 	return vis.colorMode[ctype]
 	end
+visualizer.getColor            = function(vis, ctype)
+	assert(colorType[ctype], "Color type '" .. ctype .. "' not supported.")
+	--visualizer[fmtStr3x:format("get",vis.colorMode[ctype]:gsub("^%l", string.upper),"Color")](vis)
+	colorModeGetterWrapper[2] = vis.colorMode[ctype]:gsub("^%l", string.upper) -- Twice as fast.
+	visualizer[table.concat(colorModeGetterWrapper)](vis, ctype)
+	end
 
 -- Setters
 visualizer.setWindowPosition   = function(vis, left, top)
@@ -60,6 +66,12 @@ visualizer.setColorMode        = function(vis, ctype, cmode)
 	assert(colorMode[cmode], "Color mode '" .. cmode .. "' not supported.")
 	vis.colorMode[ctype] = cmode
 	end
+visualizer.setColor            = function(vis, ctype, ...)
+	assert(colorType[ctype], "Color type '" .. ctype .. "' not supported.")
+	--visualizer[fmtStr3x:format("set",vis.colorMode[ctype]:gsub("^%l", string.upper),"Color")](vis, ctype, ...)
+	colorModeSetterWrapper[2] = vis.colorMode[ctype]:gsub("^%l", string.upper) -- Twice as fast.
+	visualizer[table.concat(colorModeSetterWrapper)](vis, ctype, ...)
+	end
 
 -- Metatable
 local mtVisualizer = {__index = visualizer}
@@ -75,9 +87,16 @@ local new = function(left, top, width, height, properities)
 
 	-- Set up color tables.
 	vis.colorMode = {}
+	vis.colorSimple = {}
+	vis.colorGradient = {}
+	vis.colorSpectral = {}
+	vis.colorWeighted = {}
+	vis.colorShader = {}
+
 	-- Set default colors.
 	for k,v in pairs(defaultColors) do
 		vis:setColorMode(k, 'simple')
+		vis:setColor(k, v)
 	end
 
 	return vis

@@ -37,6 +37,10 @@ visualizer.getWindowDimensions = function(vis)
 	return vis.window.width, vis.window.height
 	end
 
+visualizer.getColorMode        = function(vis, ctype)
+	assert(colorType[ctype], "Color type '" .. ctype .. "' not supported.")
+	return vis.colorMode[ctype]
+	end
 
 -- Setters
 visualizer.setWindowPosition   = function(vis, left, top)
@@ -52,6 +56,10 @@ visualizer.setWindowDimensions = function(vis, width, height)
 	vis.window.height = height or vis.window.height
 	end
 
+visualizer.setColorMode        = function(vis, ctype, cmode)
+	assert(colorMode[cmode], "Color mode '" .. cmode .. "' not supported.")
+	vis.colorMode[ctype] = cmode
+	end
 
 -- Metatable
 local mtVisualizer = {__index = visualizer}
@@ -65,7 +73,12 @@ local new = function(left, top, width, height, properities)
 	vis:setWindowPosition(left, top)
 	vis:setWindowDimensions(width, height)
 
-	-- Set colors.
+	-- Set up color tables.
+	vis.colorMode = {}
+	-- Set default colors.
+	for k,v in pairs(defaultColors) do
+		vis:setColorMode(k, 'simple')
+	end
 
 	return vis
 end

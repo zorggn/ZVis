@@ -76,4 +76,155 @@ function love.draw()
 	wavescope:draw(0,0)
 end
 --]==]
+
+local ffi = require "ffi"
+local liblove = ffi.os == "Windows" and ffi.load("love") or ffi.C
+
+ffi.cdef[[
+
+	typedef struct {
+		unsigned char major;
+		unsigned char minor;
+		unsigned char patch;
+	} PHYSFS_Version;
+
+	void PHYSFS_getLinkedVersion(PHYSFS_Version * ver);
+
+	const char * PHYSFS_getLastError(void);
+
+	int PHYSFS_mount(
+		const char * newDir, const char * mountPoint, int appendToPath
+	);
+
+	int PHYSFS_removeFromSearchPath(const char * oldDir);
+	int PHYSFS_unmount(const char * oldDir);
+]]
+
+-- TODO: If cdef dies like this due to either rFSP or unmnt missing, then
+--       we need an init funtion that cdef-s depending on the version;
+--       also modify Fsys.unmount to move the versioncheck out into init.
+
+local Fsys = {}
+
+Fsys.mount = function(path, mountPoint, appendToPath)
+	local result = liblove.PHYSFS_mount(path, mountPoint, appendToPath)
+
+	if result ~= 0 then 
+		return true
+	else
+		return false, liblove.PHYSFS_getLastError()
+	end
+end
+
+Fsys.unmount = function(path)
+	local result
+	local version = ffi.new('PHYSFS_Version[1]') -- may be *[1] instead.
+	liblove.PHYSFS_getLinkedVersion(version)
+
+	-- Depends on what Löve was built with.
+	if version[0].major >= 2 and version[0].minor >= 1 then
+		result = liblove.PHYSFS_unmount(path)
+	else
+		result = liblove.PHYSFS_removeFromSearchPath(path)
+	end
+
+	if result ~= 0 then 
+		return true
+	else
+		return false, liblove.PHYSFS_getLastError()
+	end
+end
+
+-------------------------------------------------------------------
+local windowTitle = "ZVis - Test App"
+
+local pathList = {}
+local current = 0
+local value = 0
+
+function love.load()
+	if love.filesystem.isFile('playlist.lua') then
+		pathList = love.filesystem.load('playlist.lua')()
+		for i,v in ipairs(pathList) do print(i,v) end
+	end
+	if #pathList>0 then
+		current = 1
+		loadFile(pathList[current])
+	end
+end
+
+function love.quit()
+	local s = "return {[["
+	s = s .. table.concat(pathList,']],[[')
+	s = s .. "]]}"
+	love.filesystem.write('playlist.lua', s)
+end
+
+function love.update(dt)
+	if not source then return end
+	if not source:isPlaying() then
+		current = ((current + 0) % #pathList) + 1
+		loadFile(pathList[current])
+	else
+		value = sounddata:getSample(math.floor(source:tell('samples')*sounddata:getChannels()))
+	end
+end
+
+function love.keypressed(k,s)
+	if s == 'left'  then current = ((current - 2) % #pathList) + 1 end
+	if s == 'right' then current = ((current + 0) % #pathList) + 1 end
+	if s == 'left' or s == 'right' then
+		loadFile(pathList[current])
+	end
+end
+
+function love.draw()
+	love.graphics.setLineWidth(5)
+	love.graphics.line(0,360,512,360+value*360,1024,360)
+end
+
+function love.filedropped(file)
+	pathList[#pathList+1] = file:getFilename()
+	current = #pathList
+	loadFile(file)
+end
+
+local mountPoint = '_temp'
+function loadFile(file)
+	-- Support both file objects and paths.
+	local path,name
+
+	if type(file) == 'string' then
+		print(file)
+		local index = file:match'^.*()/' --apparently faster than string.find(file, "/[^/]*$")
+		if not index then index = file:match'^.*()\\' end
+		path,name = file:sub(1,index), file:sub(index+1,nil)
+		Fsys.mount(path, mountPoint, false)
+		file = love.filesystem.newFile(mountPoint .. '/' .. name)
+		Fsys.unmount(mountPoint) -- is this needed though? Wouldn't löve's own unmount work?
+	else
+		path = file:getFilename()
+		name = ''
+	end
+
+	-- Handy thing to see what we're playing.
+	love.window.setTitle(windowTitle .. " | " .. path .. name)
+
+	-- Stop playing source(s).
+	love.audio.stop()
+
+	-- Try to free up memory.
+	if sounddata or source then
+		sounddata, source = nil, nil
+		collectgarbage("collect"); collectgarbage("collect")
+	end
+
+	-- Load in the new file.
+	sounddata = love.sound.newSoundData(file)
+	source    = love.audio.newSource(sounddata)
+
+	-- Play the track.
+	source:setLooping(false)
+	source:setPitch(1.0)
+	source:play()
 end
